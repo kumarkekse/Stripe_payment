@@ -1,0 +1,6 @@
+development:
+  adapter: postgresql
+  database: stripe_payment
+  pool: 5
+  username: postgres
+  password: postgres
