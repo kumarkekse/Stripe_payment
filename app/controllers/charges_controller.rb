@@ -2,38 +2,35 @@ class ChargesController < ApplicationController
   
   def create
     @amount = params[:amount]
-
     customer = Stripe::Customer.create(
       email: params[:stripeEmail],
       source: params[:stripeToken]
     )
 
-    pay_intent = Stripe::PaymentIntent.create({
+    charge = Stripe::PaymentIntent.create({
       amount: @amount,
       currency: 'usd',
+      payment_method_types: ['card'],
       payment_method: 'pm_card_visa',
-      payment_method_types: ['card']
-      },
-      description: 'My Test Payment Intent'
-    )
+      description: 'My Test Payment Intent',
+      confirm: true
+    })
 
-    pay_intent.confirm
+    payment_intent =  Stripe::PaymentIntent.retrieve(charge.id)
 
-    update_intent = Stripe::PaymentIntent.update(pay_intent.id, metadata: {user_id: '3435453'})
-    intent = Stripe::PaymentIntent.retrieve(update_intent.id)
-    # Check if 3D Secure authentication is required
-    if intent.next_action && intent.next_action.type == 'use_stripe_sdk'
-      # Redirect the customer to the 3D Secure authentication URL
-      redirect_to intent.next_action.use_stripe_sdk.stripe_js , allow_other_host: true 
-      intent.confirm
+    if payment_intent.status == 'requires_action' && payment_intent.next_action.type == 'use_stripe_sdk'
+      # Redirect the customer to complete the 3D Secure authentication flow using Stripe.js
+      redirect_to payment_intent.next_action.use_stripe_sdk.stripe_js, allow_other_host: true
     else
-      # Confirm the payment intent if no further action is required
-      intent.confirm
-      # Handle the successful payment
+      # The payment is ready to be confirmed, so confirm it
+      payment_intent.confirm
+      # Do something else, like redirect to a success page
     end
-    intent.confirm({
-    payment_method: "pm_card_visa"
-  })
+
+    intent = Stripe::PaymentIntent.update(payment_intent.id, {metadata: {user_id: '6735'}},)
+    
+    Stripe::PaymentIntent.confirm(intent.id, {payment_method: 'pm_card_visa'})
+    Customer.create(stripe_customer_id: customer.id, stripe_payment_method_id: payment_intent.payment_method)
 
   rescue Stripe::CardError => e
     flash[:error] = e.message
