@@ -30,6 +30,10 @@ Things you may want to cover:
 * run the rails server
 
            `rails s`
+  
+ Note: Here is the response link for final stripe payment
+
+https://hooks.stripe.com/redirect/complete/src_1Mg0wfSFu74TVoUEV9IQ9iOG?authenticated=false&client_secret=src_client_secret_qbISz1aM2dz1zVhpjatwGXRI&id=tdsrc_1Mg0whSFu74TVoUEWGL3d3OE&source_redirect_slug=test_YWNjdF8xTWVhTVJTRnU3NFRWb1VFLF9OUXNpM2thYjdZM1o0bVB3Q0NiMnQwUEpkcjRRbGpl0100WpUZF42h&`status=succeeded`
 
 
 
