@@ -7,6 +7,20 @@ Things you may want to cover:
 
 * Ruby version: 3.0.0
 
+* run following commands
+
+ bundle install
+
+* create the database(Also need to configure the `username` and `password` of postgres in `daytabase.yml` file.)
+
+rake db:create
+
+* run the migrations
+
+rake db:migrate
+
+
+
 * System dependencies
 
 * Configuration
