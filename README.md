@@ -25,7 +25,7 @@ Things you may want to cover:
           
           `EDITOR=nano rails credentials:edit`
           
-* create a `.env` file in the root directory and configure your `STRIPE_PUBLISHABLE_KEY` and `STRIPE_SECRET_KEY` in it.
+* configure your `STRIPE_PUBLISHABLE_KEY` and `STRIPE_SECRET_KEY` in `.env`.
          
 * run the rails server
 
